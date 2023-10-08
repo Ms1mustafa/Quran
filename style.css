@@ -63,14 +63,15 @@ a {
   }
 
   
-  #currentSorah{
+  .Btns{
     border: 2px solid #c60f34;
     padding: 1px 10px;
     border-radius: 15px;
     background-color: #c60f34;
     color: #fff;
+    cursor: pointer;
   }
-  #currentSorah:hover{
+  .Btns:hover{
     border: 2px solid #c60f34;
     background-color: initial;
     color: #c60f34;
@@ -97,14 +98,18 @@ h1,h2,h3{
     color: red!important;
 }
 
+.AYANUM{
+  color: #0da755;
+}
+
 @media (max-width: 48rem) {
   #main_header{
     text-align: center;
     display: block;
-    height: 300px;
+    height: 350px;
   }
 
-#currentAyaInput{
+#currentAyaInput , #currentSorahInput{
   width: 90%;
 }
 
@@ -112,7 +117,7 @@ h1,h2,h3{
   margin: 0.8rem 1rem;
 }
 
-#currentSorahInput{
+.BtnsInput{
   width: 100%;
 }
 
@@ -120,7 +125,7 @@ h1,h2,h3{
   display: block;
 }
 
-#currentSorah{
+.Btns{
   padding: 1px 30px;
 }
 
