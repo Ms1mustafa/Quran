@@ -45,7 +45,7 @@ currentSorah.addEventListener("click", () => {
 
 currentSorahInput.addEventListener("change", () => {
   const currentAyaInput = document.querySelector("#currentAyaInput");
-  currentAyaInput.setAttribute('max', currentAyaInput.dataset.ayas);
+  currentAyaInput.setAttribute("max", currentAyaInput.dataset.ayas);
   console.log(currentAyaInput.dataset.ayas);
 });
 
