@@ -46,7 +46,6 @@ currentSorah.addEventListener("click", () => {
 currentSorahInput.addEventListener("change", () => {
   const currentAyaInput = document.querySelector("#currentAyaInput");
   currentAyaInput.setAttribute("max", currentAyaInput.dataset.ayas);
-  console.log(currentAyaInput.dataset.ayas);
 });
 
 currentSorah.addEventListener("click", () => {
@@ -75,7 +74,6 @@ save.addEventListener("click", () => {
     localStorage.setItem("saveAya", JSON.stringify(saveAya));
 
     let storedSaveAya = JSON.parse(localStorage.getItem("saveAya"));
-    console.log(storedSaveAya.currentSorah); // Output: John
     toastr["success"]("تم الحفظ");
     toastr.options = {
       closeButton: true,
@@ -86,5 +84,8 @@ save.addEventListener("click", () => {
 });
 
 let storedSaveAya = JSON.parse(localStorage.getItem("saveAya"));
-document.querySelector("#currentSorahInput").value = storedSaveAya.currentSorah;
-document.querySelector("#currentAyaInput").value = storedSaveAya.currentAya;
+if (storedSaveAya) {
+  document.querySelector("#currentSorahInput").value =
+    storedSaveAya?.currentSorah;
+  document.querySelector("#currentAyaInput").value = storedSaveAya?.currentAya;
+}
