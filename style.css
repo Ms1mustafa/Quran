@@ -100,6 +100,7 @@ h3 {
 
 .AYANUM {
   color: #0da755;
+  cursor: pointer;
 }
 
 @media (max-width: 48rem) {

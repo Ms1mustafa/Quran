@@ -1,36 +1,23 @@
-// ********************** زر الذهاب الى اعلى الصفحة ***************
-let goTop = document.getElementById("goTop");
+const goTop = document.getElementById("goTop");
 
-// When the user scrolls down 20px from the top of the document, show the button
-window.onscroll = function () {
-  scrollFunction();
-};
-
-function scrollFunction() {
+window.onscroll = () => {
   if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
     goTop.style.display = "block";
   } else {
     goTop.style.display = "none";
   }
-}
+};
 
-// When the user clicks on the button, scroll to the top of the document
-goTop?.addEventListener("click", function () {
+goTop?.addEventListener("click", () => {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 });
 
 const currentSorah = document.querySelector("#currentSorah");
-const soraDiv = document.querySelectorAll("div");
-const aya = document.querySelectorAll(".AYANUM");
-const currentSoraAya = document.querySelectorAll("div .AYANUM");
-
-for (let i = 0; i < currentSoraAya.length; i++) {
-  const ayaId = aya[i].getAttribute("id");
-  // console.log(ayaId);
-}
-
 const currentSorahInput = document.querySelector("#currentSorahInput");
+const currentAyaInput = document.querySelector("#currentAyaInput");
+const aya = document.querySelectorAll(".AYANUM");
+
 currentSorah.addEventListener("click", () => {
   const currentSorahDiv = document.querySelectorAll(
     `#${currentSorahInput.value} span`
@@ -41,51 +28,57 @@ currentSorah.addEventListener("click", () => {
       `${currentSorahInput.value}_${i + 1}`
     );
   }
-});
-
-currentSorahInput.addEventListener("change", () => {
-  const currentAyaInput = document.querySelector("#currentAyaInput");
   currentAyaInput.setAttribute("max", currentAyaInput.dataset.ayas);
+  const currentAyaInputValue = currentAyaInput.value;
+  currentSorah.href = `#${currentSorahInput.value}${
+    currentAyaInputValue ? `_${currentAyaInputValue}` : ""
+  }`;
 });
 
-currentSorah.addEventListener("click", () => {
-  const currentAyaInput = document.querySelector("#currentAyaInput").value;
-  if (currentAyaInput) {
-    currentSorah.href = `#${currentSorahInput.value}_${currentAyaInput}`;
-  } else {
-    currentSorah.href = `#${currentSorahInput.value}`;
+function getValues() {
+  const storedSaveAya = JSON.parse(localStorage.getItem("saveAya"));
+  if (storedSaveAya) {
+    currentSorahInput.value = storedSaveAya?.currentSorah;
+    currentAyaInput.value = storedSaveAya?.currentAya;
   }
+}
+
+function showNoti(aya = null, sorah = null) {
+  if (aya && sorah) {
+    toastr["success"](`تم حفظ الاية ${aya} من ${sorah}`);
+  } else {
+    toastr["success"](`تم الحفظ`);
+  }
+  toastr.options = { closeButton: true, progressBar: true, timeOut: "3000" };
+}
+
+aya.forEach((ay) => {
+  ay.addEventListener("dblclick", () => {
+    const sorah = ay.closest("div").id;
+    const sorahName = ay.closest("div").querySelector(".sorah").textContent;
+    const ayaNum = +ay.textContent.slice(1, -1);
+    const saveAya = {
+      currentSorah: sorah,
+      currentAya: ayaNum,
+    };
+    localStorage.setItem("saveAya", JSON.stringify(saveAya));
+    showNoti(ayaNum, sorahName);
+    getValues();
+  });
 });
-
-// Store the object in local storage
-
-// Retrieve the object from local storage
 
 const save = document.querySelector("#save");
 save.addEventListener("click", () => {
-  const currentSorahInput2 = document.querySelector("#currentSorahInput");
-  const currentAyaInput2 = document.querySelector("#currentAyaInput");
-  if (currentSorahInput2.value && currentAyaInput2.value) {
-    let saveAya = {
-      currentSorah: currentSorahInput2.value,
-      currentAya: currentAyaInput2.value,
+  const currentSorahInputValue = currentSorahInput.value;
+  const currentAyaInputValue = currentAyaInput.value;
+  if (currentSorahInputValue && currentAyaInputValue) {
+    const saveAya = {
+      currentSorah: currentSorahInputValue,
+      currentAya: currentAyaInputValue,
     };
-
     localStorage.setItem("saveAya", JSON.stringify(saveAya));
-
-    let storedSaveAya = JSON.parse(localStorage.getItem("saveAya"));
-    toastr["success"]("تم الحفظ");
-    toastr.options = {
-      closeButton: true,
-      progressBar: true,
-      timeOut: "3000",
-    };
+    showNoti();
   }
 });
 
-let storedSaveAya = JSON.parse(localStorage.getItem("saveAya"));
-if (storedSaveAya) {
-  document.querySelector("#currentSorahInput").value =
-    storedSaveAya?.currentSorah;
-  document.querySelector("#currentAyaInput").value = storedSaveAya?.currentAya;
-}
+getValues();
