@@ -67,6 +67,21 @@ aya.forEach((ay) => {
   });
 });
 
+const sorah = document.querySelectorAll(".sorah");
+sorah.forEach((so) => {
+  so.addEventListener("dblclick", () => {
+    const sorahName = so.closest("div").id;
+    const saveAya = {
+      currentSorah: sorahName,
+      currentAya: null,
+    };
+    localStorage.setItem("saveAya", JSON.stringify(saveAya));
+    showNoti(sorahName);
+    getValues();
+    console.log(sorahName);
+  });
+});
+
 const save = document.querySelector("#save");
 save.addEventListener("click", () => {
   const currentSorahInputValue = currentSorahInput.value;
