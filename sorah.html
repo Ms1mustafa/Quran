@@ -6,8 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <script src="push.js"></script>
-  <!-- <script src="serviceWorker.min.js"></script> -->
 </head>
 
 <body>
@@ -218,20 +216,6 @@
     مُّتَرَبِّصٞ فَتَرَبَّصُواْۖ فَسَتَعۡلَمُونَ مَنۡ أَصۡحَٰبُ ٱلصِّرَٰطِ ٱلسَّوِيِّ وَمَنِ ٱهۡتَدَىٰ <span
       CLASS="AYANUM">(135)</span>
   </h3>
-  <button id="btn">click</button>
-  <script>
-    document.getElementById("btn").addEventListener("click", () => {
-      Push.create("Hello world!", {
-        body: "How's it hangin'?",
-        // icon: '/icon.png',
-        timeout: 4000,
-        onClick: function () {
-          window.focus();
-          this.close();
-        }
-      });
-    })
-  </script>
 </body>
 
 </html>

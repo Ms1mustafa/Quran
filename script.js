@@ -82,3 +82,36 @@ save.addEventListener("click", () => {
 });
 
 getValues();
+
+function setMaxValue() {
+  var selectedIndex = currentSorahInput.selectedIndex;
+  var selectedOption = currentSorahInput.options[selectedIndex];
+  var selectedText = +selectedOption.title;
+  currentAyaInput.max = selectedText;
+}
+
+setMaxValue();
+
+currentSorahInput.addEventListener("change", () => {
+  setMaxValue();
+});
+
+function highlightWord(selector, word) {
+  const h3Elements = document.querySelectorAll(selector);
+
+  h3Elements.forEach((h3Element) => {
+    const originalText = h3Element.innerHTML;
+    const newText = originalText.replace(
+      new RegExp(word, "g"),
+      `<span class='red'>${word}</span>`
+    );
+    h3Element.innerHTML = newText;
+  });
+}
+
+// highlightWord("h3", "ٱللَّهِ");
+// highlightWord("h3", "ٱللَّهَ");
+// highlightWord("h3", "لِلَّهِ");
+// highlightWord("h3", "لِّلَّهِ");
+// highlightWord("h3", "ٱللَّهُ");
+// highlightWord("h2", "ٱللَّهِ");
