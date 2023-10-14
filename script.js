@@ -1,10 +1,9 @@
-async function getQuranAudioInfo() {
-  // Check if the data is already saved in local storage
-  const savedData = localStorage.getItem("quranData");
+let quranData = null; // Cache for Quran data
 
-  if (savedData) {
-    // If data is found in local storage, parse and return it
-    return JSON.parse(savedData);
+async function getQuranAudioInfo() {
+  if (quranData) {
+    // If the data is already cached, return it immediately
+    return quranData;
   }
 
   try {
@@ -17,10 +16,7 @@ async function getQuranAudioInfo() {
     }
 
     const data = await response.json();
-
-    // Save the data in local storage for future use
-    localStorage.setItem("quranData", JSON.stringify(data));
-
+    quranData = data; // Cache the data
     return data;
   } catch (error) {
     console.error("Error:", error);
@@ -30,7 +26,10 @@ async function getQuranAudioInfo() {
 
 function getSurahs(value, ayahsNum, title) {
   const currentSorahInput = document.querySelector("#currentSorahInput");
-  currentSorahInput.innerHTML += `<option value="${value}" data-ayas="${ayahsNum}" title="${ayahsNum}">${title}</option>`;
+  currentSorahInput.insertAdjacentHTML(
+    "beforeend",
+    `<option value="${value}" data-ayas="${ayahsNum}" title="${ayahsNum}">${title}</option>`
+  );
 }
 
 function formatSurah(surah, surahEn) {
@@ -48,31 +47,22 @@ function formatSurah(surah, surahEn) {
   document.querySelector(".main").appendChild(div);
 }
 
-// Define a variable to store the currently playing audio
 let currentlyPlayingAudio = null;
 
 function appendAyah(surahEn, ayah, num, audio) {
   const h3 = document.querySelector(`[class="${surahEn}Ayahs"]`);
-
-  // Create a string that includes the Ayah text and Ayah number with a double-click event
   const ayahHTML = `<span class="${num}" ondblclick="playAudio('${audio}')">${ayah}</span> <span class="AYANUM" id='${surahEn}_${num}'>(${num})</span>`;
-
-  // Append the Ayah HTML to the h3 element
-  h3.innerHTML += ayahHTML;
+  h3.insertAdjacentHTML("beforeend", ayahHTML);
 }
 
 function playAudio(audioURL) {
-  // Stop the currently playing audio, if any
   if (currentlyPlayingAudio) {
     currentlyPlayingAudio.pause();
     currentlyPlayingAudio.currentTime = 0;
   }
 
-  // Create a new audio element and play it
   const audio = new Audio(audioURL);
   audio.play();
-
-  // Update the currently playing audio reference
   currentlyPlayingAudio = audio;
 }
 
@@ -104,8 +94,6 @@ async function getQuran() {
         );
       });
     });
-
-    // console.log(quran);
   } catch (error) {
     console.error("An error occurred:", error);
   }

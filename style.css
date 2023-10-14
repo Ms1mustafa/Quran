@@ -90,7 +90,12 @@ main {
   font-size: 30px;
   font-weight: 400;
   font-family: "Amiri Quran", sans-serif;
+}
+
+main span,
+main h1 {
   user-select: none;
+  cursor: pointer;
 }
 
 main div {
