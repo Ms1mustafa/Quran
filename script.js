@@ -1,4 +1,12 @@
 async function getQuranAudioInfo() {
+  // Check if the data is already saved in local storage
+  const savedData = localStorage.getItem("quranData");
+
+  if (savedData) {
+    // If data is found in local storage, parse and return it
+    return JSON.parse(savedData);
+  }
+
   try {
     const response = await fetch(
       "https://api.alquran.cloud/v1/quran/ar.alafasy"
@@ -9,6 +17,10 @@ async function getQuranAudioInfo() {
     }
 
     const data = await response.json();
+
+    // Save the data in local storage for future use
+    localStorage.setItem("quranData", JSON.stringify(data));
+
     return data;
   } catch (error) {
     console.error("Error:", error);
@@ -66,6 +78,7 @@ function playAudio(audioURL) {
 
 async function getQuran() {
   try {
+    const quranData = JSON.parse(localStorage.getItem("quranData"));
     const quran = await getQuranAudioInfo();
     quran.data.surahs.forEach((surah) => {
       getSurahs(
@@ -92,7 +105,7 @@ async function getQuran() {
       });
     });
 
-    console.log(quran);
+    // console.log(quran);
   } catch (error) {
     console.error("An error occurred:", error);
   }
@@ -202,12 +215,12 @@ async function getQuran() {
     });
   }
 
-  // highlightWord("h3", "ٱللَّهِ");
-  // highlightWord("h3", "ٱللَّهَ");
-  // highlightWord("h3", "لِلَّهِ");
-  // highlightWord("h3", "لِّلَّهِ");
-  // highlightWord("h3", "ٱللَّهُ");
-  // highlightWord("h2", "ٱللَّهِ");
+  highlightWord("h3", "ٱللَّهِ");
+  highlightWord("h3", "ٱللَّهَ");
+  highlightWord("h3", "لِلَّهِ");
+  highlightWord("h3", "لِّلَّهِ");
+  highlightWord("h3", "ٱللَّهُ");
+  highlightWord("h2", "ٱللَّهِ");
 }
 
 getQuran();
