@@ -1,7 +1,7 @@
 async function getQuranAudioInfo() {
   try {
     const response = await fetch(
-      "http://api.alquran.cloud/v1/quran/ar.alafasy"
+      "https://api.alquran.cloud/v1/quran/ar.alafasy"
     );
 
     if (!response.ok) {
