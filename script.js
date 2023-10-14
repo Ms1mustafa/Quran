@@ -67,8 +67,14 @@ function playAudio(audioURL) {
 }
 
 async function getQuran() {
+  const loadingElement = document.getElementById("loading");
   try {
-    const quranData = JSON.parse(localStorage.getItem("quranData"));
+    if (!quranData) {
+      // If data is not in cache, show the loading element
+      loadingElement.style.display = "auto";
+      quranData = await getQuranAudioInfo();
+      loadingElement.style.display = "none"; // Hide the loading element after data is fetched
+    }
     const quran = await getQuranAudioInfo();
     quran.data.surahs.forEach((surah) => {
       getSurahs(
