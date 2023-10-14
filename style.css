@@ -87,9 +87,14 @@ select {
 main {
   margin: 0 30px;
   text-align: center;
-  font-size: 35px;
+  font-size: 30px;
   font-weight: 400;
-  font-family: "quran", sans-serif;
+  font-family: "Amiri Quran", sans-serif;
+}
+
+main div {
+  border-bottom: 1px solid #00000073;
+  padding-bottom: 50px;
 }
 h1,
 h2,
@@ -100,6 +105,10 @@ h3 {
 .sorah {
   font-size: 50px;
   user-select: none;
+}
+
+.surahOpen {
+  font-size: 40px;
 }
 
 .AYANUM {
