@@ -215,12 +215,12 @@ async function getQuran() {
     });
   }
 
-  highlightWord("h3", "ٱللَّهِ");
-  highlightWord("h3", "ٱللَّهَ");
-  highlightWord("h3", "لِلَّهِ");
-  highlightWord("h3", "لِّلَّهِ");
-  highlightWord("h3", "ٱللَّهُ");
-  highlightWord("h2", "ٱللَّهِ");
+  // highlightWord("h3", "ٱللَّهِ");
+  // highlightWord("h3", "ٱللَّهَ");
+  // highlightWord("h3", "لِلَّهِ");
+  // highlightWord("h3", "لِّلَّهِ");
+  // highlightWord("h3", "ٱللَّهُ");
+  // highlightWord("h2", "ٱللَّهِ");
 }
 
 getQuran();
