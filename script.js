@@ -1,6 +1,6 @@
 let quranData = null; // Cache for Quran data
 
-async function getQuranAudioInfo() {
+async function getQuranInfo() {
   if (quranData) {
     // If the data is already cached, return it immediately
     return quranData;
@@ -11,14 +11,11 @@ async function getQuranAudioInfo() {
       "https://api.alquran.cloud/v1/quran/ar.alafasy"
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch data from the API.");
-    }
-
     const data = await response.json();
     quranData = data; // Cache the data
     return data;
   } catch (error) {
+    toastr["error"](`هناك خطأ ما`);
     console.error("Error:", error);
     throw error;
   }
@@ -51,7 +48,7 @@ let currentlyPlayingAudio = null;
 
 function appendAyah(surahEn, ayah, num, audio) {
   const h3 = document.querySelector(`[class="${surahEn}Ayahs"]`);
-  const ayahHTML = `<span class="${num}" ondblclick="playAudio('${audio}')">${ayah}</span> <span class="AYANUM" id='${surahEn}_${num}'>(${num})</span>`;
+  const ayahHTML = `<span class="${num}" ondblclick="playAudio('${audio}')">${ayah}</span>  <span class="AYANUM" id='${surahEn}_${num}'>(${num})</span> `;
   h3.insertAdjacentHTML("beforeend", ayahHTML);
 }
 
@@ -72,10 +69,11 @@ async function getQuran() {
     if (!quranData) {
       // If data is not in cache, show the loading element
       loadingElement.style.display = "auto";
-      quranData = await getQuranAudioInfo();
+      quranData = await getQuranInfo();
       loadingElement.style.display = "none"; // Hide the loading element after data is fetched
     }
-    const quran = await getQuranAudioInfo();
+    const quran = await getQuranInfo();
+    console.log(quran.data);
     quran.data.surahs.forEach((surah) => {
       getSurahs(
         surah.englishName.replace(/'/g, ""),
@@ -83,7 +81,7 @@ async function getQuran() {
         surah.name
       );
       formatSurah(surah.name, surah.englishName.replace(/'/g, ""));
-      surah.ayahs.forEach((ayah, i) => {
+      surah.ayahs.forEach((ayah) => {
         const formattedAyah1 = `${ayah.text}`;
         const formattedAyah =
           surah.englishName.replace(/'/g, "") != "Al-Faatiha"
@@ -95,13 +93,14 @@ async function getQuran() {
         appendAyah(
           surah.englishName.replace(/'/g, ""),
           formattedAyah,
-          i + 1,
+          ayah.numberInSurah,
           ayah.audio
         );
       });
     });
   } catch (error) {
     console.error("An error occurred:", error);
+    toastr["error"](`هناك خطأ ما`);
   }
 
   const currentSorah = document.querySelector("#currentSorah");
