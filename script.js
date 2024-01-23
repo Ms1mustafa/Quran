@@ -16,7 +16,8 @@ async function getQuranInfo() {
     return data;
   } catch (error) {
     toastr["error"](`هناك خطأ ما`);
-    console.error("Error:", error);
+    document.getElementById("loadingText").textContent = "هناك خطأ ما";
+    document.querySelector(".fa-spin-pulse").style.display = "none";
     throw error;
   }
 }
@@ -35,7 +36,10 @@ function formatSurah(surah, surahEn) {
   const open =
     surahEn === "Al-Faatiha"
       ? ""
+      : surahEn === "At-Tawba"
+      ? ""
       : "<h2 class='surahOpen'>بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</h2>";
+
   div.innerHTML = `
     <h1 class="sorah">${surah}</h1>
     ${open}
@@ -46,21 +50,40 @@ function formatSurah(surah, surahEn) {
 
 let currentlyPlayingAudio = null;
 
+// let currentlyPlayingAudio = null;
+
 function appendAyah(surahEn, ayah, num, audio) {
   const h3 = document.querySelector(`[class="${surahEn}Ayahs"]`);
-  const ayahHTML = `<span class="${num}" ondblclick="playAudio('${audio}')">${ayah}</span>  <span class="AYANUM" id='${surahEn}_${num}'>(${num})</span> `;
+  const ayahHTML = `<span class="${num}" ondblclick="playAudio('${audio}', this)">${ayah}</span> <span class="AYANUM" id='${surahEn}_${num}'>(${num})</span> `;
   h3.insertAdjacentHTML("beforeend", ayahHTML);
 }
 
-function playAudio(audioURL) {
+function playAudio(audioURL, spanElement) {
   if (currentlyPlayingAudio) {
     currentlyPlayingAudio.pause();
     currentlyPlayingAudio.currentTime = 0;
+    // Remove the highlighted class from the previously played span
+    if (currentlyPlayingSpan) {
+      currentlyPlayingSpan.classList.remove("highlighted");
+    }
   }
 
   const audio = new Audio(audioURL);
   audio.play();
   currentlyPlayingAudio = audio;
+
+  // Add the highlighted class to the currently playing span
+  if (spanElement) {
+    spanElement.classList.add("highlighted");
+    currentlyPlayingSpan = spanElement;
+  }
+
+  audio.addEventListener("ended", function () {
+    // Remove the highlighted class when audio ends
+    if (spanElement) {
+      spanElement.classList.remove("highlighted");
+    }
+  });
 }
 
 async function getQuran() {
@@ -73,7 +96,6 @@ async function getQuran() {
       loadingElement.style.display = "none"; // Hide the loading element after data is fetched
     }
     const quran = await getQuranInfo();
-    console.log(quran.data);
     quran.data.surahs.forEach((surah) => {
       getSurahs(
         surah.englishName.replace(/'/g, ""),

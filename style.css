@@ -222,3 +222,7 @@ h3 {
 .loadingContent .fa-spin-pulse {
   margin-bottom: 20px;
 }
+
+.highlighted {
+  background-color: yellow;
+}
